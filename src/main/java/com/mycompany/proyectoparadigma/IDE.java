@@ -1,5 +1,7 @@
 package com.mycompany.proyectoparadigma;
 
+import java.util.HashMap;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -15,6 +17,9 @@ public class IDE extends javax.swing.JFrame {
     int error;
     String entrada;
 
+    String[] keywords = {"sumar", "restar", "multiplicar", "dividir"};
+    String[] aritmetica = {"+", "-", "*", "/", "="};
+    HashMap<String, String> palabrasRervadas = new HashMap<>();
     
     public IDE() {
         initComponents();
@@ -29,20 +34,47 @@ public class IDE extends javax.swing.JFrame {
     
     
     //boton de compilar
-    private void analizarLexico(){
+    private void obtenerToken(){
+        
+        String token = "";
+        entrada = txtEntrada.getText();
+        String[] lineas = tokens(entrada);
+        
+        for(int i=0; i< lineas.length; i++){
+           palabrasRervadas.put(buscarKeywords(lineas[i]), " ");
+        }
+        
+        
+        palabrasRervadas.forEach((key, value) -> {
+            System.out.print(key);
+        });
+       
+       
+    }
+    
+    
+    private String buscarKeywords(String linea){
+        return linea.split(" ")[0];
+   }
+    
+    private String[] tokens(String palabra){
+        return palabra.split(";\n\r"); 
+    }
+    
+    /*private void analizarLexico(){
         
         String token, texto = "";
         entrada = txtEntrada.getText();
         String[] tokens = {"&", "#", ".", ",", "{", "}", "[", "]", "(", ")"};
         String[] keywords = {"imprimir", "cadena", "numero", "principal"};
         String[] aritmetica = {"+", "-", "*", "/", "="};
-    }
+    }*/
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtResultado = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtEntrada = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
@@ -52,11 +84,16 @@ public class IDE extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setText("Ejecutar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 80, 30));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtResultado.setColumns(20);
+        txtResultado.setRows(5);
+        jScrollPane1.setViewportView(txtResultado);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, 570, 200));
 
@@ -72,6 +109,10 @@ public class IDE extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        obtenerToken();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -114,7 +155,7 @@ public class IDE extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea txtEntrada;
+    private javax.swing.JTextArea txtResultado;
     // End of variables declaration//GEN-END:variables
 }
