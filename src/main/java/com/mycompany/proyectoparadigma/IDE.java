@@ -1,6 +1,8 @@
 package com.mycompany.proyectoparadigma;
 
+import static java.lang.Integer.parseInt;
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -14,12 +16,16 @@ import java.util.HashMap;
 public class IDE extends javax.swing.JFrame {
     
     int contador = 0;
-    int error;
+    String error;
+    String mensaje;
     String entrada;
-
-    String[] keywords = {"sumar", "restar", "multiplicar", "dividir"};
+    String salida;
+    
+    String[] keywords = {"sumar", "restar", "multiplicar", "dividir", "int"};
     String[] aritmetica = {"+", "-", "*", "/", "="};
-    HashMap<String, String> palabrasRervadas = new HashMap<>();
+    
+    HashMap<String, Integer> palabrasRervadas = new HashMap<>();
+    HashMap<String, String> guardarTokens = new HashMap<>();
     
     public IDE() {
         initComponents();
@@ -33,33 +39,93 @@ public class IDE extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     
     
+    private void inicializar(){
+        for(String keyword : keywords) {
+            palabrasRervadas.put(keyword, 0);
+        }
+    }
+    
     //boton de compilar
     private void obtenerToken(){
+        inicializar();
         
-        String token = "";
         entrada = txtEntrada.getText();
-        String[] lineas = tokens(entrada);
-        
-        for(int i=0; i< lineas.length; i++){
-           palabrasRervadas.put(buscarKeywords(lineas[i]), " ");
+        StringTokenizer token = new StringTokenizer(entrada, ";\n\r");
+        while(token.hasMoreTokens()){
+            String tokens = token.nextToken();
+                String resultado = comparar(tokens);
+                
+                if(!resultado.equals("Palabra reservada no existe")){
+                    //^(int )[\w]{1}( ){1}(=)?(\s\w\s)*[+]?(\s\w)?;$
+                    if(resultado.equals("int")){
+                        variables(tokens);
+                    }else{
+                        metodos(tokens);
+                    }
+                    
+                }else{
+                    
+                }
         }
         
+        txtResultado.setText(salida);
+        
+    }
+    
+    
+    private void metodos(String linea){
+        String[] palabraReservada = linea.split(" ");
+        
+        switch(palabraReservada[0]){
+            
+            case "sumar" -> {
+                int suma = parseInt(palabraReservada[1]) + parseInt(palabraReservada[2]);
+                salida = String.valueOf(suma);
+                
+            }
+                
+            case "restar" -> {
+                
+            }
+                
+            case "multiplicar" -> {
+                
+            }
+            
+            case "dividir" -> {
+                
+            }   
+        }
+    }
+    
+    private void variables(String linea){
+        
+        String[] palabraReservada = linea.split(" ");
+    }
+    
+    
+    private String comparar(String token){
+        error = "Palabra reservada no existe";
+        mensaje = error;
+        String palabraReservada = token.split(" ")[0];
         
         palabrasRervadas.forEach((key, value) -> {
-            System.out.print(key);
+            
+            if(palabrasRervadas.containsKey(palabraReservada)){
+                mensaje = key;
+            }
+            
         });
-       
-       
+        
+        return mensaje;
+        
+        
     }
     
-    
-    private String buscarKeywords(String linea){
+    /*private String buscarKeywords(String linea){
         return linea.split(" ")[0];
-   }
+   }*/
     
-    private String[] tokens(String palabra){
-        return palabra.split(";\n\r"); 
-    }
     
     /*private void analizarLexico(){
         
