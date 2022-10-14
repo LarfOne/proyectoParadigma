@@ -22,7 +22,7 @@ public class IDE extends javax.swing.JFrame {
     String entrada;
     String salida = "";
 
-    String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio", "int"};
+    String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio","elevarCuadrado", "int"};
     String[] aritmetica = {"+", "-", "*", "/", "="};
 
     HashMap<String, Integer> palabrasRervadas = new HashMap<>();
@@ -61,7 +61,7 @@ public class IDE extends javax.swing.JFrame {
                 if (!resultado.equals("Palabra reservada no existe")) {
                     //^(int )[\w]{1}( ){1}(=)?(\s\w\s)*[+]?(\s\w)?;$
                     if (resultado.equals("sumar") || resultado.equals("restar") || resultado.equals("dividir")
-                            || resultado.equals("multiplicar") || resultado.equals("promedio")) {
+                            || resultado.equals("multiplicar") || resultado.equals("promedio") || resultado.equals("elevarCuadrado")) {
                         metodos(tokens);
                     } else {
 
@@ -90,7 +90,8 @@ public class IDE extends javax.swing.JFrame {
             "([a-z]+) ([a-z]+)",// int a => declaracio sin valor, valor por defecto 0
             "([a-z]+) ([a-z]+) (=) ([a-z]+|[0-9]+)",// int a = 3 OR int a = b
             "([a-z]+) (=) ([a-z]+|[0-9]+)",
-            "([a-z]+) = ([a-z]+|[0-9]+) [(+)|(\\-)|(/)|(*)] ([a-z]+|[0-9]+)"
+            "([a-z]+) = ([a-z]+|[0-9]+) [(+)|(\\-)|(/)|(*)] ([a-z]+|[0-9]+)",
+            "([a-zA-Z]+) ([a-z]+|[0-9]+)"
 
         };
         Pattern pat;
@@ -108,9 +109,12 @@ public class IDE extends javax.swing.JFrame {
     }
 
     private void metodos(String linea) {
+        //int result = 0;
         String[] palabraReservada = linea.split(" ");
         palabraReservada[1] = esLetra(palabraReservada[1]);
-        palabraReservada[2] = esLetra(palabraReservada[2]);
+        if(palabraReservada.length > 2){
+            palabraReservada[2] = esLetra(palabraReservada[2]);
+        }
 
         switch (palabraReservada[0]) {
 
@@ -139,6 +143,12 @@ public class IDE extends javax.swing.JFrame {
                 String resultPromed = String.valueOf((Double.parseDouble(palabraReservada[1]) + Double.parseDouble(palabraReservada[2])) / 2);
                 
                 salida += "promedio " + palabraReservada[1] + " y " + palabraReservada[2] + " = " + resultPromed + "\n";
+            }
+            
+            case "elevarCuadrado" -> {
+                String resultCuadrado = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]));
+                
+                salida += "Elevado al cuadrado " + palabraReservada[1] + " = " + resultCuadrado + "\n";
             }
         }
     }
