@@ -22,7 +22,7 @@ public class IDE extends javax.swing.JFrame {
     String entrada;
     String salida = "";
 
-    String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio","elevarCuadrado", "int"};
+    String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio","elevarCuadrado", "elevarCubo", "elevar", "int"};
     String[] aritmetica = {"+", "-", "*", "/", "="};
 
     HashMap<String, Integer> palabrasRervadas = new HashMap<>();
@@ -61,7 +61,8 @@ public class IDE extends javax.swing.JFrame {
                 if (!resultado.equals("Palabra reservada no existe")) {
                     //^(int )[\w]{1}( ){1}(=)?(\s\w\s)*[+]?(\s\w)?;$
                     if (resultado.equals("sumar") || resultado.equals("restar") || resultado.equals("dividir")
-                            || resultado.equals("multiplicar") || resultado.equals("promedio") || resultado.equals("elevarCuadrado")) {
+                            || resultado.equals("multiplicar") || resultado.equals("promedio") || resultado.equals("elevarCuadrado")
+                            || resultado.equals("elevarCubo") || resultado.equals("elevar")) {
                         metodos(tokens);
                     } else {
 
@@ -110,45 +111,68 @@ public class IDE extends javax.swing.JFrame {
 
     private void metodos(String linea) {
         //int result = 0;
+        String palabra2;
         String[] palabraReservada = linea.split(" ");
         palabraReservada[1] = esLetra(palabraReservada[1]);
         if(palabraReservada.length > 2){
             palabraReservada[2] = esLetra(palabraReservada[2]);
+            palabra2 = palabraReservada[2];
+        }else{
+            palabra2 = "0";
         }
 
         switch (palabraReservada[0]) {
 
             case "sumar" -> {
-                int suma = parseInt(palabraReservada[1]) + parseInt(palabraReservada[2]);
-                salida += "Suma " + palabraReservada[1] + " + " + palabraReservada[2] + " = " + suma + "\n";
+                int suma = parseInt(palabraReservada[1]) + parseInt(palabra2);
+                salida += "Suma " + palabraReservada[1] + " + " + palabra2 + " = " + suma + "\n";
 
             }
 
             case "restar" -> {
-                String resultResta = String.valueOf(parseInt(palabraReservada[1]) - parseInt(palabraReservada[2]));
-                salida += "Resta " + palabraReservada[1] + " - " + palabraReservada[2] + " = " + resultResta + "\n";
+                String resultResta = String.valueOf(parseInt(palabraReservada[1]) - parseInt(palabra2));
+                salida += "Resta " + palabraReservada[1] + " - " + palabra2 + " = " + resultResta + "\n";
 
             }
 
             case "multiplicar" -> {
-                String resultMult = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[2]));
-                salida += "Multiplicacion " + palabraReservada[1] + " x " + palabraReservada[2] + " = " + resultMult + "\n";
+                String resultMult = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabra2));
+                salida += "Multiplicacion " + palabraReservada[1] + " x " + palabra2 + " = " + resultMult + "\n";
             }
 
             case "dividir" -> {
-                String resultResta = String.valueOf(parseInt(palabraReservada[1]) / parseInt(palabraReservada[2]));
-                salida += "divicion " + palabraReservada[1] + " / " + palabraReservada[2] + " = " + resultResta + "\n";
+                String resultResta = String.valueOf(parseInt(palabraReservada[1]) / parseInt(palabra2));
+                salida += "divicion " + palabraReservada[1] + " / " + palabra2 + " = " + resultResta + "\n";
             }
             case "promedio" -> {
-                String resultPromed = String.valueOf((Double.parseDouble(palabraReservada[1]) + Double.parseDouble(palabraReservada[2])) / 2);
+                String resultPromed = String.valueOf((Double.parseDouble(palabraReservada[1]) + Double.parseDouble(palabra2)) / 2);
                 
-                salida += "promedio " + palabraReservada[1] + " y " + palabraReservada[2] + " = " + resultPromed + "\n";
+                salida += "promedio " + palabraReservada[1] + " y " + palabra2 + " = " + resultPromed + "\n";
             }
             
             case "elevarCuadrado" -> {
                 String resultCuadrado = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]));
                 
                 salida += "Elevado al cuadrado " + palabraReservada[1] + " = " + resultCuadrado + "\n";
+            }
+            
+            case "elevarCubo" -> {
+                String resultCubo = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]));
+                
+                salida += "Elevado al cubo " + palabraReservada[1] + " = " + resultCubo + "\n";
+            }
+            
+            case "elevar" -> {
+                String resultElevar;
+                int elevado = 1;
+
+                for(int i = 0; i < parseInt(palabra2); i++){
+                    elevado = elevado * parseInt(palabraReservada[1]);
+                }
+                
+                
+                resultElevar = String.valueOf(elevado);
+                salida += "Elevado a la potencia " + palabra2 + " = " + resultElevar + "\n";
             }
         }
     }
