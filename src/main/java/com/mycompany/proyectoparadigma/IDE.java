@@ -21,10 +21,11 @@ public class IDE extends javax.swing.JFrame {
     String mensaje;
     String entrada;
     String salida = "";
+    
 
     String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio","elevarCuadrado", "elevarCubo", "elevar", "int"};
     String[] aritmetica = {"+", "-", "*", "/", "="};
-
+    
     HashMap<String, Integer> palabrasRervadas = new HashMap<>();
     HashMap<String, String> guardarTokens = new HashMap<>();
 
@@ -42,6 +43,7 @@ public class IDE extends javax.swing.JFrame {
     private void inicializar() {
         for (String keyword : keywords) {
             palabrasRervadas.put(keyword, 0);
+            
         }
     }
 
@@ -58,12 +60,13 @@ public class IDE extends javax.swing.JFrame {
             if (estructura(tokens)) {// VERIFICAMOS SI LA ESTRUCTURA ES CORRECTA
                 String resultado = comparar(tokens);// RETORNA QUE ES: METODO, VARIBLE ETC.
 
-                if (!resultado.equals("Palabra reservada no existe")) {
+                if (!resultado.equals("1")) {
                     //^(int )[\w]{1}( ){1}(=)?(\s\w\s)*[+]?(\s\w)?;$
                     if (resultado.equals("sumar") || resultado.equals("restar") || resultado.equals("dividir")
                             || resultado.equals("multiplicar") || resultado.equals("promedio") || resultado.equals("elevarCuadrado")
                             || resultado.equals("elevarCubo") || resultado.equals("elevar")) {
-                        metodos(tokens);
+                        //metodos(tokens);
+                        guardarTokens.put(tokens, "0");
                     } else {
 
                         variables(tokens);
@@ -126,40 +129,46 @@ public class IDE extends javax.swing.JFrame {
             case "sumar" -> {
                 int suma = parseInt(palabraReservada[1]) + parseInt(palabra2);
                 salida += "Suma " + palabraReservada[1] + " + " + palabra2 + " = " + suma + "\n";
+                txtResultado.setText(salida);
 
             }
 
             case "restar" -> {
                 String resultResta = String.valueOf(parseInt(palabraReservada[1]) - parseInt(palabra2));
                 salida += "Resta " + palabraReservada[1] + " - " + palabra2 + " = " + resultResta + "\n";
-
+                txtResultado.setText(salida);
             }
 
             case "multiplicar" -> {
                 String resultMult = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabra2));
                 salida += "Multiplicacion " + palabraReservada[1] + " x " + palabra2 + " = " + resultMult + "\n";
+                txtResultado.setText(salida);
             }
 
             case "dividir" -> {
                 String resultResta = String.valueOf(parseInt(palabraReservada[1]) / parseInt(palabra2));
                 salida += "divicion " + palabraReservada[1] + " / " + palabra2 + " = " + resultResta + "\n";
+                txtResultado.setText(salida);
             }
             case "promedio" -> {
                 String resultPromed = String.valueOf((Double.parseDouble(palabraReservada[1]) + Double.parseDouble(palabra2)) / 2);
                 
                 salida += "promedio " + palabraReservada[1] + " y " + palabra2 + " = " + resultPromed + "\n";
+                txtResultado.setText(salida);
             }
             
             case "elevarCuadrado" -> {
                 String resultCuadrado = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]));
                 
                 salida += "Elevado al cuadrado " + palabraReservada[1] + " = " + resultCuadrado + "\n";
+                txtResultado.setText(salida);
             }
             
             case "elevarCubo" -> {
                 String resultCubo = String.valueOf(parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]) * parseInt(palabraReservada[1]));
                 
                 salida += "Elevado al cubo " + palabraReservada[1] + " = " + resultCubo + "\n";
+                txtResultado.setText(salida);
             }
             
             case "elevar" -> {
@@ -173,6 +182,7 @@ public class IDE extends javax.swing.JFrame {
                 
                 resultElevar = String.valueOf(elevado);
                 salida += "Elevado a la potencia " + palabra2 + " = " + resultElevar + "\n";
+                txtResultado.setText(salida);
             }
         }
     }
@@ -238,7 +248,7 @@ public class IDE extends javax.swing.JFrame {
     }
 
     private String comparar(String token) {
-        error = "Palabra reservada no existe";
+        error = "1";
         mensaje = error;
         String palabraReservada = token.split(" ")[0];
 
@@ -302,6 +312,11 @@ public class IDE extends javax.swing.JFrame {
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 420, 100));
 
         jButton2.setText("Compilar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, 80, 30));
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 680, 400));
 
@@ -313,6 +328,17 @@ public class IDE extends javax.swing.JFrame {
         palabrasRervadas.clear();
         obtenerToken();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        salida = "";
+        
+        guardarTokens.forEach((key, value) -> {
+            
+            metodos(key);
+
+        });
+        guardarTokens.clear();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
