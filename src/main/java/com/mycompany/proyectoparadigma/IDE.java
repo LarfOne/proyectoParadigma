@@ -23,7 +23,8 @@ public class IDE extends javax.swing.JFrame {
     String salida = "";
     
 
-    String[] keywords = {"sumar", "restar", "multiplicar", "dividir","promedio","elevarCuadrado", "elevarCubo", "elevar", "int"};
+    String[] keywords = {"sumar", "restar", "multiplicar", "dividir",
+        "promedio","elevarCuadrado", "elevarCubo", "elevar", "int","raizCuadrada","raizCubica"};
     String[] aritmetica = {"+", "-", "*", "/", "="};
     
     HashMap<String, Integer> palabrasRervadas = new HashMap<>();
@@ -64,7 +65,9 @@ public class IDE extends javax.swing.JFrame {
                     //^(int )[\w]{1}( ){1}(=)?(\s\w\s)*[+]?(\s\w)?;$
                     if (resultado.equals("sumar") || resultado.equals("restar") || resultado.equals("dividir")
                             || resultado.equals("multiplicar") || resultado.equals("promedio") || resultado.equals("elevarCuadrado")
-                            || resultado.equals("elevarCubo") || resultado.equals("elevar")) {
+                            || resultado.equals("elevarCubo") || resultado.equals("elevar")
+                            || resultado.equals("raizCuadrada") || resultado.equals("raizCubica")) {
+                       
                         //metodos(tokens);
                         guardarTokens.put(tokens, "0");
                     } else {
@@ -184,6 +187,27 @@ public class IDE extends javax.swing.JFrame {
                 salida += "Elevado a la potencia " + palabra2 + " = " + resultElevar + "\n";
                 txtResultado.setText(salida);
             }
+            //------------------------------------------------------------------
+            //"raizCuadrada","raizCubica"
+            case "raizCuadrada" -> {
+                String resultCubo = String.valueOf(Math.sqrt(parseInt(palabraReservada[1])));
+                
+                salida += "Raiz cuadrada de " + palabraReservada[1] + " = " + resultCubo + "\n";
+                txtResultado.setText(salida);
+            }
+            
+            case "raizCubica" -> {
+                String resultCubo = String.valueOf(Math.cbrt(parseInt(palabraReservada[1])));
+                
+                salida += "Raiz cubica de " + palabraReservada[1] + " = " + resultCubo + "\n";
+                txtResultado.setText(salida);
+            }
+            
+            
+            
+            
+            
+            
         }
     }
 
